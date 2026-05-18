@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GBHSS YOUNUSABAD - Admissions Dept.</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- Tesseract.js for OCR -->
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="brand">
+            <img src="../books-attendance/logo.png" alt="logo" onerror="this.src='https://via.placeholder.com/45'">
+            <h3>GBHSS YOUNUSABAD<br><span style="font-weight: 400; font-size: 12px; color: #94a3b8;">Admissions Dept.</span></h3>
+        </div>
+
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a class="nav-link active" data-target="dashboard">
+                    <i class="fa-solid fa-chart-pie"></i> Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-target="applicants">
+                    <i class="fa-solid fa-users-viewfinder"></i> Applicants List
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-target="print-forms">
+                    <i class="fa-solid fa-file-pdf"></i> Print Admission Form
+                </a>
+            </li>
+        </ul>
+
+        <div class="bottom-btn">
+            <a href="../index.html" class="nav-link">
+                <i class="fa-solid fa-arrow-left"></i> Back to Main Menu
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="header">
+            <h1 id="page-title">Admissions Dashboard</h1>
+            <div class="date-badge">
+                <i class="fa-regular fa-calendar-check" style="margin-right: 8px; color: var(--accent);"></i>
+                <span id="current-date-display">Loading...</span>
+            </div>
+        </div>
+
+        <div class="views-container">
+            <!-- Dashboard View -->
+            <section id="dashboard" class="screen active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
+                        <div class="stat-details">
+                            <h3>Total Applicants</h3>
+                            <p id="stat-total-applicants" class="stat-value">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="color: #10b981; background: #d1fae5;"><i class="fa-solid fa-check-double"></i></div>
+                        <div class="stat-details">
+                            <h3>Passed Entry Test</h3>
+                            <p id="stat-passed" class="stat-value">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="color: #f59e0b; background: #fef3c7;"><i class="fa-solid fa-hourglass-half"></i></div>
+                        <div class="stat-details">
+                            <h3>Pending Tests</h3>
+                            <p id="stat-pending" class="stat-value">0</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.04);">
+                    <h2 style="font-size: 18px; margin-top: 0; margin-bottom: 20px;">Quick Actions</h2>
+                    <div style="display: flex; gap: 15px;">
+                        <button class="btn btn-primary" onclick="app.openAddApplicantModal()">
+                            <i class="fa-solid fa-plus"></i> New Applicant
+                        </button>
+                        <button class="btn btn-ai" onclick="app.switchScreen('print-forms')">
+                            <i class="fa-solid fa-print"></i> Blank Admission Form
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Applicants View -->
+            <section id="applicants" class="screen">
+                <div class="actions-bar">
+                    <div class="search-input">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="search-applicant" placeholder="Search applicant by name, phone or Reg ID..." onkeyup="app.filterApplicants()">
+                    </div>
+                    
+                    <select id="filter-status" class="filter-select" onchange="app.filterApplicants()">
+                        <option value="">All Statuses</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Passed">Test Cleared</option>
+                        <option value="Failed">Failed</option>
+                        <option value="Admitted">Admitted</option>
+                    </select>
+
+                    <button class="btn btn-ai" onclick="app.openScannerModal()">
+                        <i class="fa-solid fa-microchip"></i> Scan Form (AI)
+                    </button>
+                    
+                    <button class="btn btn-ai" onclick="app.printMultipleAdmitCards()">
+                        <i class="fa-solid fa-border-all"></i> Batch Print Admit Cards (4/Page)
+                    </button>
+                    
+                    <button class="btn btn-primary" onclick="app.openAddApplicantModal()">
+                        <i class="fa-solid fa-plus"></i> Manual Entry
+                    </button>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Reg ID</th>
+                                <th>Applicant Name</th>
+                                <th>Father Name</th>
+                                <th>Class</th>
+                                <th>Phone</th>
+                                <th>Test Status</th>
+                                <th style="text-align: center;">Marks</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="applicants-table-body">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Print Forms View -->
+            <section id="print-forms" class="screen">
+                <div style="background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.04);">
+                    <h2 style="margin-top: 0; font-size: 22px;"><i class="fa-solid fa-print" style="color: var(--accent); margin-right: 10px;"></i> Print Official Admission Form</h2>
+                    <p style="color: #64748b; margin-bottom: 25px; line-height: 1.6;">Generate high-quality, blank academic admission forms to hand out to parents for manual entry.</p>
+                    <button class="btn btn-primary" onclick="app.printAdmissionForm()"><i class="fa-solid fa-print"></i> Print Form Now</button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Modals -->
+    <!-- Add Applicant Modal -->
+    <div id="add-applicant-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="applicant-modal-title">New Entry Test Registration</h2>
+                <span class="close-btn" onclick="app.closeModal('add-applicant-modal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="add-applicant-form">
+                    <input type="hidden" id="edit-applicant-id">
+                    <div class="form-group row">
+                        <div style="flex:1;">
+                            <label>Applicant Full Name</label>
+                            <input type="text" id="app-name" required class="form-control">
+                        </div>
+                        <div style="flex:1;">
+                            <label>Father's Name</label>
+                            <input type="text" id="app-father" required class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div style="flex:1;">
+                            <label>Class Applying For</label>
+                            <input type="text" id="app-class" required class="form-control" placeholder="e.g. 4">
+                        </div>
+                        <div style="flex:1;">
+                            <label>Guardian Phone No.</label>
+                            <input type="tel" id="app-phone" required class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div style="flex:1;">
+                            <label>Previous School (Optional)</label>
+                            <input type="text" id="app-prev-school" class="form-control">
+                        </div>
+                        <div style="flex:1;">
+                            <label>Test Date</label>
+                            <input type="date" id="app-test-date" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div style="flex:1;">
+                            <label>Test Status</label>
+                            <select id="app-status" class="form-control">
+                                <option value="Pending">Pending</option>
+                                <option value="Passed">Passed</option>
+                                <option value="Failed">Failed</option>
+                                <option value="Admitted">Admitted</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div style="flex:1;">
+                            <label>Entry Test Marks</label>
+                            <input type="number" id="app-marks" class="form-control" placeholder="1st Attempt Marks">
+                        </div>
+                        <div style="flex:1;">
+                            <label>Re-Test Marks (If Failed)</label>
+                            <input type="number" id="app-retest-marks" class="form-control" placeholder="2nd Attempt Marks">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary full-width">Save Registration</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Scanner Modal -->
+    <div id="scanner-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fa-solid fa-camera" style="color: var(--accent);"></i> AI Form Scanner</h2>
+                <span class="close-btn" onclick="app.closeModal('scanner-modal')">&times;</span>
+            </div>
+            <div class="modal-body" style="text-align: center;">
+                <p style="color: #64748b; font-size: 13px; margin-bottom: 20px;">Upload a scanned picture of the Admission Form. The AI will attempt to extract details automatically.</p>
+                
+                <div style="border: 2px dashed #cbd5e1; border-radius: 12px; padding: 20px; margin-bottom: 20px; position: relative; background: #f8fafc;">
+                    <input type="file" id="scan-image-upload" accept="image/*" style="opacity: 0; position: absolute; top:0; left:0; width:100%; height:100%; cursor: pointer;" onchange="app.handleImageUpload(event)">
+                    <i class="fa-solid fa-cloud-arrow-up" style="font-size: 32px; color: #94a3b8; margin-bottom: 10px;"></i>
+                    <p style="margin: 0; font-weight: bold; color: #475569;">Click or Drag image here</p>
+                    <p style="margin: 5px 0 0; font-size: 11px; color: #94a3b8;">Supports JPG, PNG</p>
+                </div>
+
+                <div id="scan-preview-container" style="display: none; margin-bottom: 20px;">
+                    <img id="scan-preview" src="" style="max-width: 100%; max-height: 200px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                </div>
+
+                <div id="scan-progress-container" style="display: none; margin-bottom: 20px; text-align: left;">
+                    <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: bold; margin-bottom: 5px;">
+                        <span id="scan-status-text">Processing...</span>
+                        <span id="scan-progress-percentage">0%</span>
+                    </div>
+                    <div style="height: 8px; background: #e2e8f0; border-radius: 4px; overflow: hidden;">
+                        <div id="scan-progress-bar" style="height: 100%; width: 0%; background: var(--accent); transition: width 0.3s;"></div>
+                    </div>
+                </div>
+
+                <button id="btn-process-scan" class="btn btn-primary full-width" onclick="app.processScannedForm()" disabled>
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Extract Data
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden Print Area -->
+    <div id="print-area"></div>
+
+    <script src="js/DB.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
