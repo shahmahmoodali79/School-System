@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GBHSS YOUNUSABAD - Main Menu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        .container {
+            background: white;
+            padding: 50px 40px;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 1000px;
+            width: 95%;
+        }
+        .logo-container {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            overflow: hidden;
+            padding: 5px;
+        }
+        .logo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        h1 {
+            color: #2b5c7e;
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 32px;
+            font-weight: 800;
+        }
+        p {
+            color: #4a5568;
+            margin-bottom: 40px;
+            font-size: 16px;
+        }
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            justify-content: center;
+        }
+        .card {
+            background: #ffffff;
+            border: 2px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 30px 20px;
+            text-decoration: none;
+            color: #2d3748;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            box-sizing: border-box;
+        }
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: #2b5c7e;
+            box-shadow: 0 20px 25px -5px rgba(43, 92, 126, 0.2), 0 10px 10px -5px rgba(43, 92, 126, 0.1);
+        }
+        .card i {
+            font-size: 45px;
+            color: #2b5c7e;
+            margin-bottom: 15px;
+            transition: transform 0.3s ease;
+        }
+        .card:hover i {
+            transform: scale(1.1);
+            color: #1a365d;
+        }
+        .card h2 {
+            margin: 0 0 10px 0;
+            font-size: 20px;
+            font-weight: 800;
+            color: #1a202c;
+        }
+        .card span {
+            font-size: 14px;
+            color: #718096;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo-container">
+            <!-- Ensure logo.png exists in root or points to books-attendance/logo.png -->
+            <img src="books-attendance/logo.png" alt="GBHSS Younusabad Logo" onerror="this.src='https://via.placeholder.com/100?text=Logo'">
+        </div>
+        <h1>GBHSS YOUNUSABAD</h1>
+        <p>Select a system to proceed</p>
+        <div class="cards">
+            <!-- New Admission Option -->
+            <a href="admissions/index.html" class="card">
+                <i class="fa-solid fa-user-plus"></i>
+                <h2>New Admission & Entry Test</h2>
+                <span>Download admission forms (PDF/JPEG), digitize manual entries, and issue Entry Test Admit Cards.</span>
+            </a>
+            
+            <a href="result-management/index.html" class="card">
+                <i class="fa-solid fa-graduation-cap"></i>
+                <h2>Result Management</h2>
+                <span>Manage student exams, marks, tabulation sheets, and generate report cards.</span>
+            </a>
+            
+            <a href="books-attendance/index.html" class="card">
+                <i class="fa-solid fa-book-open-reader"></i>
+                <h2>Books & Attendance</h2>
+                <span>Manage student attendance via QR code, track library books, and stock.</span>
+            </a>
+        </div>
+    </div>
+</body>
+</html>
