@@ -16,6 +16,28 @@
     <!-- MediaPipe Selfie Segmentation for Background Removal -->
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/selfie_segmentation.js" crossorigin="anonymous"></script>
 </head>
+    <script>
+fetch("../school_backup_2026-05-18_12-19.json")
+  .then(response => response.json())
+  .then(data => {
+
+    if(data.students){
+      localStorage.setItem("students", JSON.stringify(data.students));
+    }
+
+    if(data.attendance){
+      localStorage.setItem("attendance", JSON.stringify(data.attendance));
+    }
+
+    if(data.books){
+      localStorage.setItem("books", JSON.stringify(data.books));
+    }
+
+    console.log("Backup Loaded Successfully");
+
+  })
+  .catch(error => console.error(error));
+</script>
 <body>
     <div class="app-container">
         <!-- Sidebar Navigation -->
